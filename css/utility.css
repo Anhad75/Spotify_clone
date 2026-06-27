@@ -1,0 +1,26 @@
+ * { margin: 0%; padding: 0%; box-sizing: border-box; }
+        body {
+            background-color: black;
+            font-family: sans-serif;
+            overflow: hidden; /* Prevent body scroll, let containers scroll */
+            color: white;
+        }
+
+        /* Adjust main container to leave exactly 90px at bottom for the player */
+        .main-wrapper {
+            height: calc(100vh - 90px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Diagnostic classes kept for your reference */
+        .border { border: 2px solid black; margin: 3px; }
+        .align { align-items: center; }
+        .justify { justify-content: center; }
+        .flex { display: flex; }

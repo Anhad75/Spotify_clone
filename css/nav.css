@@ -1,0 +1,220 @@
+.nav {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+.home {
+    border-radius: 50em;
+    padding: 10px;
+    display: flex;
+    background-color: #1f1f1f;
+    align-items: center;
+    border: none;
+    margin: 0 10px 0 40px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.home:hover {
+    background-color: #2a2a2a;
+    border: 1px solid white;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #242424;
+    border-radius: 50em;
+    padding: 0 16px;
+    height: 48px;
+    width: 420px;
+    border: 1px solid transparent;
+    transition: 0.2s;
+}
+
+.search-container:hover,
+.search-container:focus-within {
+    background-color: #2a2a2a;
+    border: 1px solid white;
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+    fill: #b3b3b3;
+    margin-right: 12px;
+}
+
+.search-container:focus-within .search-icon {
+    fill: white;
+}
+
+.search {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 14px;
+    flex: 1;
+    text-overflow: ellipsis;
+}
+
+.search::placeholder {
+    color: #b3b3b3;
+}
+
+.shortcut-hint {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.hint-default,
+.hint-expanded {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.hint-expanded {
+    display: none;
+}
+
+.kbd-key {
+    border: 1px solid #757575;
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: #b3b3b3;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #121212;
+}
+
+.plus-sign {
+    color: #757575;
+    font-size: 12px;
+    margin: 0 2px;
+}
+
+.search-container:hover .hint-default {
+    display: none;
+}
+
+.search-container:hover .hint-expanded {
+    display: flex;
+}
+
+.search-container:focus-within .shortcut-hint,
+.search:not(:placeholder-shown)~.shortcut-hint {
+    display: none;
+}
+
+.separator {
+    width: 1px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 0 12px;
+}
+
+.browse-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 4px;
+}
+
+.browse-icon {
+    width: 20px;
+    height: 20px;
+    fill: #b3b3b3;
+    transition: 0.2s;
+}
+
+.browse-btn:hover .browse-icon {
+    fill: white;
+    transform: scale(1.05);
+}
+
+.tooltip {
+    position: absolute;
+    top: 40px;
+    background-color: #282828;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.2s;
+    pointer-events: none;
+}
+
+.browse-btn:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.navleft {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 1px;
+    margin-right: 10px;
+}
+
+.navleft button {
+    cursor: pointer;
+    transition: transform 0.01s ease-in-out, color 0.01s ease;
+}
+
+.navleft button:hover {
+    transform: scale(1.05);
+}
+
+.line {
+    background: #fff;
+    width: 1px;
+    height: 25px;
+    margin: 16px;
+}
+
+.nombut {
+    background: black;
+    color: #b3b3b3;
+    padding: 7px;
+    font-size: 16px;
+    border-radius: 50em;
+    border: none;
+    font-weight: 550;
+}
+
+.nombut:hover {
+    color: white;
+}
+
+.logbut {
+    background: white;
+    color: black;
+    padding: 14px 23px;
+    border-radius: 50em;
+    font-size: 17px;
+    font-weight: 800;
+    border: none;
+}
+
+.install {
+    display: flex;
+    align-items: center;
+}
+
+.install img {
+    height: 19px;
+    margin-right: 10px;
+}

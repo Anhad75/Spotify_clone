@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Search</title>
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/left.css">
+    <link rel="stylesheet" href="css/right.css">
+    <link rel="stylesheet" href="css/create.css">
+    <link rel="stylesheet" href="css/bottom-player.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/utility.css">
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <!-- TOP NAVIGATION -->
+        <div class="nav">
+            <svg viewBox="0 0 24 24" fill="white" width="32px" height="32px" style="margin: 0 10px 0 20px;"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.24 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15.001 10.62 18.66 12.9c.42.18.6.78.3 1.14zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.72 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            <button class="home">
+                <svg viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33a2 2 0 0 1 1 1.732V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6h-3v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z"/></svg>
+            </button>
+
+            <div class="search-container">
+                <svg class="search-icon" xmlns="http://w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M10.533 1.27893C5.35215 1.27893 1.12598 5.41887 1.12598 10.5579C1.12598 15.697 5.35215 19.8369 10.533 19.8369C12.767 19.8369 14.8235 19.0671 16.4402 17.7794L20.7929 22.132C21.1834 22.5226 21.8166 22.5226 22.2071 22.132C22.5976 21.7415 22.5976 21.1083 22.2071 20.7178L17.8634 16.3741C19.1616 14.7849 19.94 12.7634 19.94 10.5579C19.94 5.41887 15.7138 1.27893 10.533 1.27893ZM3.12598 10.5579C3.12598 6.55226 6.42768 3.27893 10.533 3.27893C14.6383 3.27893 17.94 6.55226 17.94 10.5579C17.94 14.5636 14.6383 17.8369 10.533 17.8369C6.42768 17.8369 3.12598 14.5636 3.12598 10.5579Z"></path>
+                </svg>
+                <input class="search" placeholder="What do you want to play?">
+                <div class="shortcut-hint">
+                    <div class="hint-default"></div>
+                    <div class="hint-expanded"><span class="kbd-key">Ctrl</span><span class="plus-sign">+</span><span class="kbd-key">K</span></div>
+                </div>
+                <div class="separator"></div>
+                <button class="browse-btn">
+                    <svg class="browse-icon" viewBox="0 0 24 24" xmlns="http://w3.org/2000/svg"><path d="M4 4h16a2 2 0 0 1 2 2v2H2V6a2 2 0 0 1 2-2zm18 6v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8h20zm-7 3a3 3 0 1 0-6 0 3 3 0 0 0 6 0z" fill-rule="evenodd" clip-rule="evenodd" /></svg>
+                    <span class="tooltip">Browse</span>
+                </button>
+            </div>
+
+            <div class="navleft">
+                <button class="nombut">Premium</button>
+                <button class="nombut">Support</button>
+                <button class="nombut">Download</button>
+                <div class="line"></div>
+                <button class="nombut install">Install App</button>
+                <button class="nombut">Sign up</button>
+                <button class="logbut">Log in</button>
+            </div>
+        </div>
+
+        <!-- MAIN VIEWPORT ALIGNMENT -->
+        <div class="container">
+            <!-- SIDEBAR LIBRARY -->
+            <div class="left">
+                <div class="topheading">
+                    <h1>Your Library</h1>
+                    <button class="createbutton"><img src="svg/plus.svg" alt="" style="margin-right:4px;">Create</button>
+                </div>
+                
+                <div class="mid">
+                    <!-- Default cards populated by JS -->
+                </div>
+
+                <div class="bottom">
+                    <div>
+                        <button>Legal</button>
+                        <button>Safety & Privacy Center</button>
+                        <button>Privacy Policy</button>
+                        <button>Cookies</button>
+                        <button>About Ads</button>
+                        <button>Accessibility</button>
+                    </div>
+                </div>
+                
+                <div class="lan"><img src="svg/lan.svg" alt="" height="18px">English</div>
+            </div>
+
+            <!-- RIGHT DATA PANEL -->
+            <div class="right">
+                <div class="rightnav">
+                    <button>All</button>
+                    <button>Song</button>
+                    <button>Playlist</button>
+                    <button>Album</button>
+                    <button>Profile</button>
+                    <button>Podcast & Shows</button>
+                    <button>Artist</button>
+                </div>
+
+                <!-- DYNAMIC SONG GRID -->
+                <div class="song-grid" id="mainLibrary">
+                    <!-- Song cards will be generated here by Javascript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MASTER AUDIO PLAYER -->
+    <div class="master-player">
+        <!-- Left: Info -->
+        <div class="player-info">
+            <img src="" alt="" class="player-img" id="playerImg" style="display: none;">
+            <div class="player-text">
+                <div class="player-title" id="playerTitle">No song selected</div>
+                <div class="player-artist" id="playerArtist">-</div>
+            </div>
+        </div>
+
+        <!-- Center: Controls -->
+        <div class="player-controls-container">
+            <div class="player-buttons">
+                <!-- Shuffle -->
+                <button class="control-btn"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.59 2.76 1.543l1.838 2.835-.615 1.002-1.423-2.196A2.25 2.25 0 0 0 .39 3.5zm10.77 8.243-1.22-.98-1.06 1.319 1.503 1.206a3.75 3.75 0 0 0 2.378.852H14v-1.5h-1.239a2.25 2.25 0 0 1-1.597-.897z"/></svg></button>
+                <!-- Prev -->
+                <button class="control-btn" id="prevBtn"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-1.4 0V1.7a.7.7 0 0 1 .7-.7z"/></svg></button>
+                <!-- Play/Pause -->
+                <button class="play-pause-btn" id="playPauseBtn">
+                    <svg viewBox="0 0 16 16" id="playIcon"><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"/></svg>
+                    <svg viewBox="0 0 16 16" id="pauseIcon" style="display: none;"><path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z"/></svg>
+                </button>
+                <!-- Next -->
+                <button class="control-btn" id="nextBtn"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 1.4 0V1.7a.7.7 0 0 0-.7-.7z"/></svg></button>
+                <!-- Repeat -->
+                <button class="control-btn"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h8.5A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25h-8.5A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5z"/></svg></button>
+            </div>
+            <div class="progress-container">
+                <span class="time" id="currentTime">0:00</span>
+                <div class="progress-bar-bg" id="progressBar">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+                <span class="time" id="durationTime">0:00</span>
+            </div>
+        </div>
+
+        <!-- Right: Volume -->
+        <div class="player-volume">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="#b3b3b3"><path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.967 3.639 3.639 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 0 1 0 4.88z"/></svg>
+            <div class="vol-bar-bg" id="volBar">
+                <div class="vol-bar-fill" id="volFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

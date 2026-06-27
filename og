@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Search</title>
+    
+    <style>
+        /* =========================================
+           GLOBAL RESETS & VARIABLES
+           ========================================= */
+        * {
+            margin: 0%;
+            padding: 0%;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: black;
+            font-family: sans-serif;
+            overflow-x: hidden; /* Prevents horizontal scrolling anomalies */
+        }
+
+        .container {
+            display: flex;
+            /* gap: 2px; */
+        }
+
+        /* Diagnostic classes kept for your reference */
+        .border { border: 2px solid black; margin: 3px; }
+        .align { align-items: center; }
+        .justify { justify-content: center; }
+        .flex { display: flex; }
+
+
+        /* =========================================
+           NAV.CSS (Top Navigation Bar)
+           ========================================= */
+        .nav {
+            /* background-color: black; */
+            display: flex;
+            align-items: center;
+        }
+
+        .home {
+            border-radius: 50em;
+            padding: 10px;
+            display: flex;
+            background-color: #1f1f1f;
+            align-items: center;
+            list-style: none;
+            border: none;
+            margin: 10px;
+            margin-left: 40px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-right: 4px;
+        }
+
+        .home:hover {
+            background-color: #2a2a2a;
+            border: 1px solid white;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: #242424;
+            border-radius: 50em;
+            padding: 0 16px;
+            height: 48px;
+            width: 420px;
+            margin-left: 8px;
+            border: 1px solid transparent;
+            transition: background-color 0.2s, border 0.2s;
+        }
+
+        .search-container:hover, .search-container:focus-within {
+            background-color: #2a2a2a;
+            border: 1px solid white;
+        }
+
+        .search-icon {
+            width: 24px;
+            height: 24px;
+            fill: #b3b3b3;
+            margin-right: 12px;
+            flex-shrink: 0;
+            transition: fill 0.2s;
+        }
+
+        .search-container:focus-within .search-icon {
+            fill: white;
+        }
+
+        .search {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 14px;
+            flex: 1;
+            font-family: sans-serif;
+            text-overflow: ellipsis;
+        }
+
+        .search::placeholder {
+            color: #b3b3b3;
+        }
+
+        .shortcut-hint {
+            display: flex;
+            align-items: center;
+            margin-left: 8px;
+        }
+
+        .hint-default, .hint-expanded {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .hint-expanded {
+            display: none;
+        }
+
+        .kbd-key {
+            border: 1px solid #757575;
+            border-radius: 4px;
+            padding: 2px 6px;
+            color: #b3b3b3;
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #121212;
+        }
+
+        .plus-sign {
+            color: #757575;
+            font-size: 12px;
+            margin: 0 2px;
+        }
+
+        .search-container:hover .hint-default { display: none; }
+        .search-container:hover .hint-expanded { display: flex; }
+        .search-container:focus-within .shortcut-hint,
+        .search:not(:placeholder-shown)~.shortcut-hint { display: none; }
+
+        .separator {
+            width: 1px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin: 0 12px;
+            flex-shrink: 0;
+        }
+
+        .browse-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 4px;
+        }
+
+        .browse-icon {
+            width: 20px;
+            height: 20px;
+            fill: #b3b3b3;
+            transition: fill 0.2s, transform 0.1s;
+        }
+
+        .browse-btn:hover .browse-icon {
+            fill: white;
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            position: absolute;
+            top: 40px;
+            background-color: #282828;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+
+        .browse-btn:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .navleft {
+            margin-right: 10px;
+            align-items: center;
+            display: flex;
+            margin-left: auto;
+            gap: 1px;
+        }
+
+        .navleft button {
+            cursor: pointer;
+            transition: transform 0.01s ease-in-out, color 0.01s ease;
+        }
+
+        .navleft button:hover { transform: scale(1.05); }
+
+        .line {
+            background: #fff;
+            width: 1px;
+            height: 25px;
+            margin: 16px;
+        }
+
+        .nombut {
+            background: black;
+            color: #b3b3b3;
+            padding: 7px;
+            font-size: 16px;
+            border-radius: 50em;
+            border-style: none;
+            font-weight: 550;
+        }
+
+        .nombut:hover { color: white; }
+
+        .logbut {
+            background-color: white;
+            color: black;
+            padding: 14px;
+            border-radius: 50em;
+            font-size: 17px;
+            padding-right: 23px;
+            padding-left: 23px;
+            border-style: none;
+            font-weight: 800;
+        }
+
+        .install {
+            display: flex;
+        }
+
+        .install img {
+            height: 19px;
+            margin-right: 10px;
+        }
+
+
+        /* =========================================
+           LEFT.CSS (Library Sidebar)
+           ========================================= */
+        .left {
+            border: 2px;
+            width: 25%; /* Dynamically calculated width */
+            height: 78vh;
+            margin: 3px;
+            border-radius: 11px;
+            background: #121212;
+            overflow: hidden;
+            position: relative; /* Acts as the coordinate origin for .hover */
+        }
+
+        .left::after {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to bottom, #121212 0%, transparent 30%);
+            z-index: 10;
+            pointer-events: none; /* THE MAGIC TRICK */
+        }
+
+        .topheading {
+            display: flex;
+        }
+
+        .topheading h1 {
+            margin-left: 19px;
+            font-size: 15px;
+            margin-top: 19px;
+            color: white;
+        }
+
+        .topheading button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50em;
+            padding-left: 21px;
+            margin-left: auto;
+            margin-right: 28px;
+            margin-top: 13px;
+            border-style: none;
+            gap: 6px;
+            background: #1F1F1F;
+            font-size: 16px;
+            padding-right: 21px;
+            color: white;
+            font-weight: 600;
+            padding-top: 9px;
+            padding-bottom: 9px;
+            cursor: pointer;
+        }
+
+        .topheading button:hover {
+            background-color: #2f2f2f;
+            scale: 1.05;
+        }
+
+        .mid {
+            /* border: 2px solid white; */
+            height: 330px;
+            overflow-y: auto; /* Changed from scroll for cleaner UX */
+            justify-content: flex-start;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding-top: 26px;
+            margin-top: 14px;
+        }
+
+        .info {
+            /* border: 2px solid white; */
+            width: 91%;
+            border-radius: 10px;
+            color: white;
+            background: #1F1F1F;
+            padding: 17px;
+            line-height: 31px;
+            border-style: none;
+        }
+
+        .info button {
+            font-size: 14px;
+            padding: 16px;
+            border-radius: 27px;
+            font-weight: 600;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            margin-top: 16px;
+            cursor: pointer;
+            border-style: none;
+        }
+
+        .info button:hover { scale: 1.05; }
+
+        /* Scrollbar Architecture */
+        .mid::-webkit-scrollbar { width: 8px; }
+        .mid::-webkit-scrollbar-track { background: transparent; }
+        .mid::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 10px;
+        }
+        .mid::-webkit-scrollbar-thumb:hover { background: #b3b3b3; }
+
+
+        /* =========================================
+           RIGHT MAIN VIEW (Implied right.css)
+           ========================================= */
+        .right {
+            border: 2px;
+            flex: 1; /* Stretches to fill available viewport remainder */
+            height: 78vh;
+            margin: 3px;
+            border-radius: 11px;
+            background: #121212;
+        }
+
+        .rightnav {
+            padding: 15px;
+        }
+
+        .rightnav button {
+            border-radius: 50em;
+            padding: 12px 15px;
+            color: rgb(221, 221, 221);
+            font-weight: 600;
+            background: #2A2A2A;
+            border-style: none;
+            cursor: pointer;
+        }
+
+        .rightnav button:hover { background-color: #383838; }
+
+
+        /* =========================================
+           BOTTOM.CSS (Footer Links & Ad Banner)
+           ========================================= */
+        .bottom div {
+            /* border: 2px solid white; */
+            margin: 16px;
+            margin-top: 40px;
+        }
+
+        .bottom div button {
+            background-color: transparent;
+            border-style: none;
+            color: rgb(159, 159, 159);
+            padding-right: 10px;
+            padding-bottom: 10px;
+        }
+
+        .bottom div button:hover {
+            text-decoration: underline;
+            color: white;
+            cursor: pointer;
+        }
+
+        .lan {
+            scale: 0.8;
+            border: 1px solid white;
+            font-size: 17px;
+            color: white;
+            border-radius: 25px;
+            width: 36%;
+            margin-left: 13px;
+            background: black;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            transition: 0.2s;
+        }
+
+        .lan:hover {
+            scale: 0.85;
+            background-color: #333;
+            cursor: pointer;
+        }
+
+        .lan img { margin-right: 10px; }
+
+        .bottomad {
+            color: white;
+            padding: 10px;
+            border: 2px solid black;
+            height: 10vh;
+            border-radius: 13px;
+            margin-top: 6px;
+            background: linear-gradient(-90deg, rgb(36, 141, 193) 0%, rgb(114, 88, 176) 50%, rgb(193, 36, 159) 100%);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .btsign {
+            margin-left: auto;
+            border-radius: 50em;
+            padding: 15px 30px;
+            margin-right: 22px;
+            background: white;
+            color: black;
+            font-weight: 800;
+            letter-spacing: 0px;
+            word-spacing: 2px;
+            cursor: pointer;
+        }
+
+
+        /* =========================================
+           CREATE.CSS (Dynamic File Upload UI)
+           ========================================= */
+        .hover {
+            position: absolute; /* Anchors strictly to .left boundaries */
+            top: 75px; 
+            right: 20px; 
+            padding: 4px;
+            background: #2A2A2A;
+            display: flex;
+            flex-direction: column; /* Allows audio player to stack neatly */
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            min-height: 70px; /* Changed to min-height to accommodate media player */
+            z-index: 2000;
+            border: 2px solid transparent;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .mysong {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 8px;
+            background-color: #505050;
+            border-style: none;
+            border: 2px solid white;
+            color: rgb(187, 187, 187);
+        }
+
+        .mysong:hover {
+            cursor: pointer;
+            background: #666666;
+            color: white;
+        }
+
+        .hover img {
+            transition: transform 0.3s ease, filter 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .hover:hover img {
+            transform: rotate(15deg);
+            filter: invert(53%) sepia(87%) saturate(432%) hue-rotate(93deg) brightness(92%) contrast(90%);
+        }
+
+        .hover:hover {
+            border: 2px solid snow;
+            background: linear-gradient(90deg, rgb(207, 23, 72) 0%, rgb(203, 0, 115) 100%);
+        }
+
+        .hover:hover .mysong {
+            background: transparent;
+            border: none;
+            color: white;
+        }
+        
+        /* Media element styling */
+        .dynamic-player {
+            width: 100%;
+            max-width: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none; /* Hidden until loaded */
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* =========================================
+           RESPONSIVE.CSS (Mobile Matrix Calculations)
+           ========================================= */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .search-container {
+                width: 90vw; 
+                margin: 10px 0;
+            }
+
+            .navleft .nombut { display: none; }
+            .navleft .install, .navleft .logbut { display: inline-block; }
+
+            .right {
+                width: 100%;
+                flex: none;
+                margin: 5px 0;
+            }
+
+            /* Off-canvas Sliding Drawer Logic */
+            .left {
+                position: fixed;
+                top: 65px;
+                left: 0;
+                width: 75vw;
+                max-width: 320px;
+                height: calc(100vh - 65px);
+                z-index: 3000;
+                margin: 0;
+                border-radius: 0 11px 11px 0;
+                
+                transform: translateX(-150%);
+                transition: transform 0.4s ease-in-out;
+                box-shadow: 10px 0 20px rgba(0, 0, 0, 0.7);
+            }
+
+            .left.active {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <img src="logo.svg" alt="Spotify" height="35px" style="margin: 8px; margin-left: 23px;">
+
+        <button class="home">
+            <img src="home.svg" alt="" width="28px" class="homenav">
+        </button>
+
+        <div class="search-container">
+            <svg class="search-icon" xmlns="http://w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M10.533 1.27893C5.35215 1.27893 1.12598 5.41887 1.12598 10.5579C1.12598 15.697 5.35215 19.8369 10.533 19.8369C12.767 19.8369 14.8235 19.0671 16.4402 17.7794L20.7929 22.132C21.1834 22.5226 21.8166 22.5226 22.2071 22.132C22.5976 21.7415 22.5976 21.1083 22.2071 20.7178L17.8634 16.3741C19.1616 14.7849 19.94 12.7634 19.94 10.5579C19.94 5.41887 15.7138 1.27893 10.533 1.27893ZM3.12598 10.5579C3.12598 6.55226 6.42768 3.27893 10.533 3.27893C14.6383 3.27893 17.94 6.55226 17.94 10.5579C17.94 14.5636 14.6383 17.8369 10.533 17.8369C6.42768 17.8369 3.12598 14.5636 3.12598 10.5579Z"></path>
+            </svg>
+            <input class="search" placeholder="What do you want to play?">
+            
+            <div class="shortcut-hint">
+                <div class="hint-default"></div>
+                <div class="hint-expanded">
+                    <span class="kbd-key">Ctrl</span>
+                    <span class="plus-sign">+</span>
+                    <span class="kbd-key">Shift</span>
+                    <span class="plus-sign">+</span>
+                    <span class="kbd-key">L</span>
+                </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <button class="browse-btn">
+                <svg class="browse-icon" viewBox="0 0 24 24" xmlns="http://w3.org/2000/svg">
+                    <path d="M4 4h16a2 2 0 0 1 2 2v2H2V6a2 2 0 0 1 2-2zm18 6v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8h20zm-7 3a3 3 0 1 0-6 0 3 3 0 0 0 6 0z" fill-rule="evenodd" clip-rule="evenodd" />
+                </svg>
+                <span class="tooltip">Browse</span>
+            </button>
+        </div>
+
+        <div class="navleft">
+            <button class="nombut">Premium</button>
+            <button class="nombut">Support</button>
+            <button class="nombut">Download</button>
+            <div class="line"></div>
+            <button class="nombut install"><img src="install.svg" alt="">Install App</button>
+            <button class="nombut">Sign up</button>
+            <button class="logbut">Log in</button>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="left">
+            <div class="topheading">
+                <h1>Your Library</h1>
+                <button class="createbutton"><img src="plus.svg" alt="">Create</button>
+            </div>
+            
+            <div class="mid">
+                </div>
+
+            <div class="bottom">
+                <div>
+                    <button>Legal</button>
+                    <button>Safety & Privacy Center</button>
+                    <button>Privacy Policy</button>
+                    <button>Cookies</button>
+                    <button>About Ads</button>
+                    <button>Accessibility</button>
+                </div>
+            </div>
+            
+            <div class="lan"><img src="lan.svg" alt="" height="18px">English</div>
+        </div>
+
+        <div class="right">
+            <div class="rightnav">
+                <button>All</button>
+                <button>Song</button>
+                <button>Playlist</button>
+                <button>Album</button>
+                <button>Profile</button>
+                <button>Podcast & Shows</button>
+                <button>Artist</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottomad">
+        <div>
+            <h5><b>Preview of Spotify</b></h5>
+            <p>Sign up to get unlimited songs and podcasts with occasional ads. No credit card needed.</p>
+        </div>
+        <div class="btsign">Sign Up free</div>
+    </div>
+
+    <script>
+        // 1. Structural DOM Population
+        function info(h3, h5, button) {
+            document.querySelector(".mid").innerHTML += `<div class="info">
+                    <h3>${h3}</h3>
+                    <h5>${h5}</h5>
+                    <button>${button}</button>
+                </div>`
+        }
+        
+        info("Create your first playlist", "It's easy, we will help you!", "Create Playlist");
+        info("Let's find some podcasts to follow", "We'll keep you updated on new episodes", "Browse podcasts");
+
+        // 2. Interactive Media Upload Logic
+        document.querySelector(".createbutton").addEventListener("click", () => {
+            const existingPanel = document.querySelector(".hover");
+
+            if (existingPanel) {
+                existingPanel.classList.remove("visible");
+                setTimeout(() => {
+                    existingPanel.remove();
+                }, 500);
+            } else {
+                const newDiv = document.createElement("div");
+                newDiv.className = "hover fade-in";
+
+                // Injecting HTML with a hidden file input and an HTML5 media player
+                newDiv.innerHTML = `
+                    <img src="music.svg" alt="" height="30px">
+                    <button class="mysong" id="uploadTrigger">
+                        Add my Song!!
+                        <h6>Click here to add your Song</h6>
+                    </button>
+                    
+                    <input type="file" id="mediaInput" accept="audio/*, video/*" style="display: none;">
+                    <audio id="audioPlayer" class="dynamic-player" controls></audio>
+                `;
+                
+                // Append securely to the spatial origin .left
+                document.querySelector(".left").appendChild(newDiv);
+                
+                // Trigger visual transiton
+                setTimeout(() => {
+                    newDiv.classList.add("visible");
+                }, 10);
+
+                // Attach event listener to simulate the file click securely
+                document.getElementById('uploadTrigger').addEventListener('click', () => {
+                    document.getElementById('mediaInput').click();
+                });
+
+                // Algorithm to read local data and pipe it into the HTML player
+                document.getElementById('mediaInput').addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const fileURL = URL.createObjectURL(file);
+                        const player = document.getElementById('audioPlayer');
+                        
+                        player.src = fileURL;
+                        player.style.display = 'block'; // Make player visible
+                        player.play(); // Auto-execute media stream
+                    }
+                });
+            }
+        });
+
+        // 3. Mobile UI Toggle Control
+        document.querySelector(".home").addEventListener("click", () => {
+            document.querySelector(".left").classList.toggle("active");
+        });
+    </script>
+</body>
+</html>

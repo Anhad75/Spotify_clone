@@ -1,0 +1,115 @@
+.right {
+    flex: 1;
+    margin: 3px;
+    border-radius: 11px;
+    background: #121212;
+    background: linear-gradient(to bottom, #222222 0%, #121212 300px);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    border: 2px solid transparent;
+}
+
+.rightnav {
+    padding: 15px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.rightnav button {
+    border-radius: 50em;
+    padding: 7px 15px;
+    color: rgb(221, 221, 221);
+    font-weight: 600;
+    background: #2A2A2A;
+    border-style: none;
+    cursor: pointer;
+}
+
+.rightnav button:hover {
+    background-color: #383838;
+}
+
+/* Grid for Songs */
+.song-grid {
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 24px;
+}
+
+.song-card {
+    background: #181818;
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.song-card:hover {
+    background: #282828;
+}
+
+.song-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.song-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.song-card p {
+    font-size: 14px;
+    color: #b3b3b3;
+    font-weight: 500;
+}
+
+.card-play-btn {
+    position: absolute;
+    right: 24px;
+    bottom: 85px;
+    width: 48px;
+    height: 48px;
+    background: #1db954;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
+}
+
+.song-card:hover .card-play-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-play-btn:hover {
+    background: #1ed760;
+    transform: scale(1.05) !important;
+}
+
+.card-play-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: black;
+    margin-left: 2px;
+}
